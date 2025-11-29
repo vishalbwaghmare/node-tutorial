@@ -1,20 +1,38 @@
-// npm - global command, comes with node
-//npm --version
+const { readFile, writeFile } = require('fs')
+const path = require('path')
+const util = require('util')
 
-//local dependency - use it only in this perticulat project
-//npm i <packageName>
+const readFilePromise = util.promisify(readFile)
+const writeFilePromise = util.promisify(writeFile)
 
-//global dependency - use it in any project
-// npm install -g <packageName>
-// sudo npm install -g <packageName> (mac)
+const start =  async () =>{
+    try{
+        const first = await readFilePromise("./content/first.txt", 'utf8')
+        const second = await readFilePromise("./content/second.txt", 'utf8')
 
-// manual approach (create package.json in root, create properties etc)
-// npm inint (step ny step, press enter to skip)
-// npm inint -y (everything default)
+        await writeFilePromise('./content/result-mind-grenage.txt', `THIS IS AWESOME : ${first} ${second}`)
+        console.log(first)
+        console.log(second)
+    }catch(error){
+        console.log(error)
+    }
+}
 
-const _ = require('lodash')
+start()
 
-const item = [1, [2, [3, [4]]]]
-const newItems = _.flattenDeep(item)
 
-console.log(newItems) // [1, 2, 3, 4]
+// const getText = (path) => {
+//     return new Promise((resolve, reject) => {
+//         readFile(path, 'utf8', (err, data) => {
+//             if (err) {
+//                 reject(err)
+//             } else {
+//                 resolve(data)
+//             }
+//         })
+//     })
+// }
+
+// getText('./content/first.txt')
+//     .then(result => console.log(result))
+//     .catch(err => console.log(err))
