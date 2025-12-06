@@ -1,13 +1,19 @@
-const {createReadStream} = require('fs')
+var http = require('http')
 
-const stream = createReadStream('./content/big.txt');
+var fs = require('fs')
+const { error } = require('console')
 
-//default 64kb
-// last buffer - remainder
-// highWaterMark - controlsize
-//const stream = createReadStream('./content/big.txt', {highWaterMark: 90000})
-//const stream = createReadStream('./content/big.txt', {encoding: 'utf8'})
+http.createServer(function (req, res){
+    // const text = fs.readFileSync('./content/big.txt', 'utf8')
+    // res.end(text)
 
-stream.on('data', (result) =>{
-    console.log(result)
+    const fileStream = fs.createReadStream('./content/big.txt', 'utf8')
+    fileStream.on('open',()=> {
+       fileStream.pipe(res) 
+    })
+
+    fileStream.on('error', (err) => {
+        res.end(err)
+    })
 })
+.listen(3000)
