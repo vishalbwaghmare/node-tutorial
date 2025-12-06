@@ -1,7 +1,5 @@
-const {createReadSteam} = require('fs')
+const {writeFileSync} = require('fs')
 
-const stream = createReadSteam('./content/big.txt');
-
-stream.on('data', (result) =>{
-    console.log(result)
-})
+for(let i = 0; i < 10000; i++){
+    writeFileSync('./content/big.txt', `hello world ${i}\n` , {flag: 'a'})
+}
